@@ -1,0 +1,31 @@
+{
+  "name": "meidum-slider",
+  "version": "1.0.0",
+  "description": "Implementation of the medium slider in Vue ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node_modules/.bin/webpack-dev-server",
+    "build": "node_modules/.bin/webpack --progress --hide-modules",
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dapobelieve/medium-slider.git"
+  },
+  "keywords": [
+    "speaker-deck",
+    "slider",
+    "vue",
+    "tailwind"
+  ],
+  "author": "DapoBelieve",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dapobelieve/medium-slider/issues"
+  },
+  "homepage": "https://github.com/dapobelieve/medium-slider#readme",
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
