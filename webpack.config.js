@@ -57,6 +57,7 @@ module.exports = {
 	devServer: {
 		compress: true,
 		port: 9000,
-		overlay: true
+		overlay: true,
+		disableHostCheck: true
 	}
 }

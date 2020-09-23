@@ -1,18 +1,14 @@
 <template>
-	<div class="container bg-gray-400 mx-auto">
+	<div class="text-center pb-8">
+		<!-- <h3 class="text-4xl">Speaker Deck Slider</h3> -->
 		<player />
 	</div>
 </template>
 <script>
 export default {
+	
 	components: {
 		Player: () => import("@/app/Player")
-	},
-	mounted() {
-		console.log("APP LOADED")
 	}
 }
 </script>
-<style lang="scss">
-
-</style>
