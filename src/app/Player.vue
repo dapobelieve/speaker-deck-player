@@ -13,14 +13,14 @@
 				</div>
 			</transition>
 			<transition name="slideup">
-				<div v-if="hover" class="player-controls flex items-end absolute bottom-0 right-0 left-0 bg-yellow-200">
-					<div @click="show--" class="prev">
-						<div class="material-icons text-white cursor-pointer">
+				<div class="player-controls flex items-end absolute bottom-0 right-0 left-0 bg-yellow-200">
+					<div @click="slideTo('-')" class="prev">
+						<div :class="{'disable': slider.current === 1}" class="material-icons text-white cursor-pointer">
 						arrow_back_ios
 						</div>
 					</div>
-					<div class="next">
-						<div @click="show++" disable class="material-icons text-white cursor-pointer">
+					<div @click="slideTo('+')" class="next">
+						<div :class="{'disable': slider.current == slider.items.length }" class="material-icons text-white cursor-pointer">
 							arrow_forward_ios
 						</div>
 					</div>
@@ -31,12 +31,14 @@
 					</div>		
 				</div>
 			</transition>
-			<div class="player-slider flex rounded">
-				<img class="rounded" :src="images[0]" alt="">
+			<div class="player-slider  rounded">
+				<div v-for="image in images" class="slide-item flex">
+					<img class="rounded" :src="image" alt="">
+				</div>
 			</div>
 			<div class="player-tiles bottom-0 left-0 w-full absolute rounded-t-none items-center flex flex-row cursor-pointer">
-				<div @click="show = x" :style="`width: ${computeWidth}%`" v-for="x in numberOfSlides" class="tile flex justify-center items-center" :class="{'bg-pink-500': show >= x, 'height-2x': hover}">
-					<div ref="preview" :class="{'left': currTileOffsetLeft < (150/2), 'right': currTileOffsetRight < (150/2)}" class="preview absolute" :style="`background-image: url(${images[1]})`"></div>
+				<div @click="show = x" :style="`width: ${computeWidth}%`" v-for="x in 300" class="tile flex justify-center items-center" :class="{'bg-pink-500': show >= x, 'height-2x': hover}">
+					<div ref="preview" :class="{'left': currTileOffsetLeft !==0 && currTileOffsetLeft < (150/2), 'right': currTileOffsetRight < (150/2)}" class="preview absolute" :style="`background-image: url(${images[1]})`"></div>
 				</div>
 			</div>		
 		</div>
@@ -46,20 +48,24 @@
 export default {
 	data () {
 		return {
+			slider: {
+				items: 0,
+				current: 1
+			},
 			hover: true,
-			numberOfSlides: 20,
-			show: 3,
+			show: 1,
 			currTileOffsetLeft: null,
 			currTileOffsetRight: null,
 			images: [
 				'https://res.cloudinary.com/rohing/image/upload/v1585572497/harley-davidson-1HZcJjdtc9g-unsplash_vwslej.jpg',
-				'https://avatars2.githubusercontent.com/u/15062380?s=460&u=2f400d9555dc07bc4d2c2d25483ddba570fef29b&v=4'
+				'https://avatars2.githubusercontent.com/u/15062380?s=460&u=2f400d9555dc07bc4d2c2d25483ddba570fef29b&v=4',
+				'https://res.cloudinary.com/rohing/image/upload/v1587700139/photo-1542393545-10f5cde2c810_zvvwje.jpg'
 			]
 		}
 	},
 	computed: {
 		computeWidth() {
-			return parseFloat(100/this.numberOfSlides)
+			return parseFloat(100/this.slider.items.length)
 		},
 		playerWidth() {
 			return this.$refs['player'].offsetWidth
@@ -75,7 +81,30 @@ export default {
 
 				e.target.parentNode.classList.toggle('height-2x')
 			}
+		},
+		slideTo(sign) {
+			if(sign === '+' && this.slider.current != this.slider.items.length) {
+				++this.slider.current
+			}else if(sign === '-' && this.slider.current != 1) {
+				--this.slider.current
+			}
+			this.slide()
+		},
+		slide() {
+			let slide = this.slider.current
+			
+			if(this.slider.current < 1) slide = 1
+			if(this.slide.current > this.slider.items.length) slide = this.slider.items.length
+
+			for(var i=0; i<this.slider.items.length; i++) {
+				this.slider.items[i].style.display = 'none'
+			}
+			this.slider.items[slide - 1].style.display = 'block'
 		}
+	},
+	mounted() {
+		this.slider.items = document.querySelectorAll('.slide-item')
+		this.slide()
 	}
 }
 </script>
@@ -86,12 +115,14 @@ export default {
 	// height: 400px;
 
 	.player-slider{
-		height: 600px;
+		.slide-item {
+			height: 600px;
 
-		img {
-			height: 100%;
-			width: 100%;
-			object-fit: cover;
+			img {
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
 		}
 	}
 
@@ -104,7 +135,7 @@ export default {
 		}
 		
 		.tile {
-			height: 5px;		
+			height: 7px;		
 
 			&:hover .preview {
 				display: block;
@@ -131,7 +162,7 @@ export default {
 	}
 
 	.player-info {
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(0, 0, 0, 0.4);
 		height: 70px;
 		
 		.avatar {
@@ -148,21 +179,16 @@ export default {
 	}
 
 	.player-controls {
-		background-color: rgba(0, 0, 0, 0.9);
+		background-color: rgba(0, 0, 0, 0.4);
 		padding: 0 10px 15px;
 		overflow: hidden;
 		height: 70px;
 		
+		.disable {
+			color: #4a544a;
+			cursor: default;
+		}	
 
-		.prev {
-			::before {
-				content: '';
-				position: absolute;
-				background-color: red;
-				top: 0;
-				right: 50%
-			}
-		}
 	}
 
 	.slidedown-enter-active, .slidedown-leave-active, .slideup-enter-active, .slideup-leave-active {
