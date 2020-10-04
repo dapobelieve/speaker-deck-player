@@ -37,8 +37,8 @@
 				</div>
 			</div>
 			<div class="player-tiles bottom-0 left-0 w-full absolute rounded-t-none items-center flex flex-row cursor-pointer">
-				<div @click="show = x" :style="`width: ${computeWidth}%`" v-for="x in 300" class="tile flex justify-center items-center" :class="{'bg-pink-500': show >= x, 'height-2x': hover}">
-					<div ref="preview" :class="{'left': currTileOffsetLeft !==0 && currTileOffsetLeft < (150/2), 'right': currTileOffsetRight < (150/2)}" class="preview absolute" :style="`background-image: url(${images[1]})`"></div>
+				<div @click="show = x" :style="`width: ${computeWidth}%`" v-for="x in slider.items.length" class="tile flex justify-center items-center" :class="{'bg-pink-500': show >= x, 'height-2x': hover}">
+					<div ref="preview" :class="{'left': currTileOffsetLeft !==0 && currTileOffsetLeft < (150/2), 'right': currTileOffsetRight < (150/2)}" class="preview absolute" :style="`background-image: url(${images[x-1]})`"></div>
 				</div>
 			</div>		
 		</div>
