@@ -13,7 +13,7 @@
 				</div>
 			</transition>
 			<transition name="slideup">
-				<div class="player-controls flex items-end absolute bottom-0 right-0 left-0 bg-yellow-200">
+				<div v-if="hover" class="player-controls flex items-end absolute bottom-0 right-0 left-0 bg-yellow-200">
 					<div @click="slideTo('-')" class="prev">
 						<div :class="{'disable': slider.current === 1}" class="material-icons text-white cursor-pointer">
 						arrow_back_ios
@@ -37,7 +37,7 @@
 				</div>
 			</div>
 			<div class="player-tiles bottom-0 left-0 w-full absolute rounded-t-none items-center flex flex-row cursor-pointer">
-				<div @click="show = x" :style="`width: ${computeWidth}%`" v-for="x in slider.items.length" class="tile flex justify-center items-center" :class="{'bg-pink-500': show >= x, 'height-2x': hover}">
+				<div @click="slider.current = x; slide()" :style="`width: ${computeWidth}%`" v-for="x in slider.items.length" class="tile flex justify-center items-center" :class="{'bg-pink-500': slider.current >= x, 'height-2x': hover}">
 					<div ref="preview" :class="{'left': currTileOffsetLeft !==0 && currTileOffsetLeft < (150/2), 'right': currTileOffsetRight < (150/2)}" class="preview absolute" :style="`background-image: url(${images[x-1]})`"></div>
 				</div>
 			</div>		
@@ -52,7 +52,7 @@ export default {
 				items: 0,
 				current: 1
 			},
-			hover: true,
+			hover: false,
 			show: 1,
 			currTileOffsetLeft: null,
 			currTileOffsetRight: null,
